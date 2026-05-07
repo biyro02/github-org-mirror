@@ -12,11 +12,21 @@ log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"; }
 
 mkdir -p "$MIRROR_DIR"
 
-repos=$(curl -s \
+# Try org endpoint first; fall back to user endpoint for personal accounts
+api_response=$(curl -s \
   -H "Authorization: token $GITHUB_TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
-  "https://api.github.com/orgs/$GITHUB_ORG/repos?per_page=100&type=all" \
-  | python3 -c "import json,sys; [print(r['name']) for r in json.load(sys.stdin)]")
+  "https://api.github.com/orgs/$GITHUB_ORG/repos?per_page=100&type=all")
+
+if ! echo "$api_response" | python3 -c "import json,sys; d=json.load(sys.stdin); assert isinstance(d,list)" 2>/dev/null; then
+    log "Org endpoint not available, trying user endpoint..."
+    api_response=$(curl -s \
+      -H "Authorization: token $GITHUB_TOKEN" \
+      -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/users/$GITHUB_ORG/repos?per_page=100&type=all")
+fi
+
+repos=$(echo "$api_response" | python3 -c "import json,sys; [print(r['name']) for r in json.load(sys.stdin)]")
 
 count=0
 for repo in $repos; do
