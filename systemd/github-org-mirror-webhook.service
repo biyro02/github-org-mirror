@@ -1,0 +1,15 @@
+[Unit]
+Description=GitHub Org Mirror Webhook Receiver
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/github-org-mirror/webhook.py
+Restart=always
+RestartSec=5
+StandardOutput=append:/opt/github-org-mirror/webhook.log
+StandardError=append:/opt/github-org-mirror/webhook.log
+WorkingDirectory=/opt/github-org-mirror
+
+[Install]
+WantedBy=multi-user.target
