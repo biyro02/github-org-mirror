@@ -83,10 +83,10 @@ class WebhookHandler(http.server.BaseHTTPRequestHandler):
         if event in ("push", "create", "release", "delete"):
             if repo_name:
                 log.info("event=%s repo=%s — sync triggered", event, repo_name)
-                subprocess.Popen([SYNC_REPO, repo_name])
+                subprocess.Popen(["bash", SYNC_REPO, repo_name])
         elif event == "repository" and payload.get("action") == "created":
             log.info("New repo created: %s — cloning", repo_name)
-            subprocess.Popen([SYNC_REPO, repo_name])
+            subprocess.Popen(["bash", SYNC_REPO, repo_name])
         else:
             log.debug("Ignored event=%s", event)
 

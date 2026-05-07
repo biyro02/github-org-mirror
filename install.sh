@@ -47,12 +47,11 @@ source "$INSTALL_DIR/.env"
 
 # Token doğrula
 echo "==> Verifying GitHub token..."
-gh_user=$(curl -sf \
-  -H "Authorization: token $GITHUB_TOKEN" \
-  https://api.github.com/user \
-  | python3 -c "import json,sys; print(json.load(sys.stdin)['login'])" 2>/dev/null || echo "")
-[ -z "$gh_user" ] && { echo "ERROR: GitHub token invalid or unreachable."; exit 1; }
-echo "    OK (authenticated as: $gh_user)"
+if ! curl -sf -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/rate_limit > /dev/null 2>&1; then
+    echo "ERROR: GitHub token invalid or unreachable."
+    exit 1
+fi
+echo "    OK"
 
 # systemd varsa servis kur, yoksa başlatma komutu göster
 if command -v systemctl &>/dev/null && systemctl list-units &>/dev/null 2>&1; then
