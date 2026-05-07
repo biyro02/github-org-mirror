@@ -4,7 +4,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?logo=linux&logoColor=black)](https://www.linux.org/)
 [![Shell](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![nginx](https://img.shields.io/badge/Proxy-nginx-009639?logo=nginx&logoColor=white)](https://nginx.org/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![No Dependencies](https://img.shields.io/badge/Dependencies-none-lightgrey)](https://github.com/biyro02/github-org-mirror)
 
 Automatically mirrors all repositories of a GitHub organization to a self-hosted Linux server. Any push triggers an instant sync via webhook; a cron job runs hourly as fallback and picks up newly created repositories automatically.
